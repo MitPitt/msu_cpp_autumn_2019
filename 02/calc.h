@@ -4,6 +4,15 @@
 #include <string>
 #include <map>
 
+class MyException {
+	std::string mes;
+public:
+	std::string message() {
+		return mes;
+	}
+	MyException(std::string a) : mes(a) {}
+};
+
 enum tokenType {Number,Plus,BinMinus,UnMinus,Mult,Div};
 std::map<char, tokenType> dict = { {'N',Number} ,{'+',Plus} ,{'-',BinMinus} ,{'—',UnMinus} ,{'*',Mult} ,{'/',Div} };
 std::map<tokenType, int> price = { {Plus,1} ,{BinMinus,1} ,{Mult,2} ,{Div,2} };
@@ -17,7 +26,7 @@ public:
 	}
 	int Value() {
 		if (type == Number) return Num;
-		else throw "token is not a number!";
+		else throw MyException("token is not a number!");
 	}
 	token(tokenType a) :type(a) {}
 	token(tokenType a, int x) :type(a), Num(x) {}
@@ -32,7 +41,7 @@ void readNum(const std::string& str, int& i, std::vector<token>& tokens) {
 	while (str[i] == ' ') i++;
 	int start = i;
 	if ((str[i] > '9') || (str[i] < '0'))
-		throw "bad number";
+		throw MyException("bad number");
 	while ((str[i] <= '9') && (str[i] >= '0'))
 		i++;
 	std::string newnum = str.substr(start, i - start);
@@ -46,7 +55,7 @@ void readOp(const std::string& str, int& i, std::vector<token>& tokens) {
 		tokens.push_back(token(dict[c]));
 		i++;
 	}
-	else throw "bad operation";
+	else throw MyException("bad operation");
 }
 void tokenize(const std::string& str, std::vector<token>& tokens) {
 	int i = 0;
@@ -59,9 +68,9 @@ void tokenize(const std::string& str, std::vector<token>& tokens) {
 		while (str[i] == ' ') i++;
 	}
 	if (tokens.size() == 0)
-		throw "no tokens";
+		throw MyException("no tokens");
 	if (tokens.back().Type() != Number)
-		throw "last token is an operation";
+		throw MyException("last token is an operation");
 }
 
 int poliz(const std::vector<token>& tokens) {
@@ -108,7 +117,7 @@ int poliz(const std::vector<token>& tokens) {
 				break;
 			case Div:
 				if (a == 0)
-					throw "can't divide by 0!";
+					throw MyException("can't divide by 0!");
 				a = b / a;
 				Stack.push_back(token(Number, a));
 				break;
@@ -122,7 +131,7 @@ int poliz(const std::vector<token>& tokens) {
 		}
 	}
 	if (Stack.size() != 1)
-		throw "stack error";
+		throw MyException("stack error");
 	return Stack.back().Value();
 }
 
