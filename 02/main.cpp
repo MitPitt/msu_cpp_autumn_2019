@@ -6,8 +6,8 @@ int main(int argc, char* argv[]){
 		try {
 			std::cout << calc(argv[1]) << std::endl;
 		}
-		catch (const char* str) {
-			std::cerr << str << std::endl;
+		catch (MyException error) {
+			std::cerr << error.message() << std::endl;
 			return 1;
 		}
 		return 0;
@@ -16,16 +16,4 @@ int main(int argc, char* argv[]){
 		std::cout << "too many or no arguments" << std::endl;
 		return 1;
 	}
-
-	/*std::string str;
-	std::getline(std::cin, str);
-
-	try {
-		std::cout << calc(str) << std::endl;
-	}
-	catch (const char* str) {
-		std::cerr << str << std::endl;
-		return 1;
-	}*/
-
 }
