@@ -5,7 +5,7 @@
 #include <map>
 
 enum tokenType {Number,Plus,BinMinus,UnMinus,Mult,Div};
-std::map<char, tokenType> dict = { {'N',Number} ,{'+',Plus} ,{'-',BinMinus} ,{'—',UnMinus} ,{'*',Mult} ,{'/',Div} };
+std::map<char, tokenType> dict = { {'N',Number} ,{'+',Plus} ,{'-',BinMinus} ,{'â€”',UnMinus} ,{'*',Mult} ,{'/',Div} };
 std::map<tokenType, int> price = { {Plus,1} ,{BinMinus,1} ,{Mult,2} ,{Div,2} };
 
 class token {
@@ -26,7 +26,6 @@ void readNum(const std::string& str, int& i, std::vector<token>& tokens) {
 	while (str[i] == ' ') i++;
 	while (str[i] == '-') {
 		tokens.push_back(token(UnMinus));
-		//std::cout << str[i] << "u\n";
 		i++;
 		while (str[i] == ' ') i++;
 	}
@@ -38,7 +37,6 @@ void readNum(const std::string& str, int& i, std::vector<token>& tokens) {
 		i++;
 	std::string newnum = str.substr(start, i - start);
 	int num = stoi(newnum);
-	//std::cout << num << "d\n";
 	tokens.push_back(token(Number, num));
 }
 void readOp(const std::string& str, int& i, std::vector<token>& tokens) {
@@ -46,7 +44,6 @@ void readOp(const std::string& str, int& i, std::vector<token>& tokens) {
 	char c = str[i];
 	if ((c == '*') || (c == '/') || (c == '+') || (c == '-')) {
 		tokens.push_back(token(dict[c]));
-		//std::cout << c << "o\n";
 		i++;
 	}
 	else throw "bad operation";
@@ -71,9 +68,6 @@ int poliz(const std::vector<token>& tokens) {
 	std::vector<token> line;
 	std::vector<token> Stack; 
 	//use stack for ops
-	/*for (auto i : tokens)
-		std::cout << i.Type() << ' ';
-	std::cout << std::endl;*/
 	for (auto i : tokens) {
 		if (i.Type() == Number)
 			line.push_back(i);
@@ -91,11 +85,6 @@ int poliz(const std::vector<token>& tokens) {
 		line.push_back(Stack.back());
 		Stack.pop_back();
 	}
-
-	/*for (auto i : line)
-		std::cout << i.Type() << ' ';
-	std::cout << std::endl;*/
-
 	//calculate //use stack for nums
 	for (auto i : line) {
 		if (i.Type() == Number) Stack.push_back(i);
@@ -142,4 +131,3 @@ int calc(const std::string& str) {
 	tokenize(str, tokens);
 	return poliz(tokens);
 }
-
