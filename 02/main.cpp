@@ -2,7 +2,6 @@
 
 int main(int argc, char* argv[]){
 	if (argc == 2) {
-		//std::cout << argv[1] << std::endl;
 		try {
 			std::cout << calc(argv[1]) << std::endl;
 		}
