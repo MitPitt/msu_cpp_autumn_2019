@@ -14,7 +14,7 @@ public:
 };
 
 enum tokenType {Number,Plus,BinMinus,UnMinus,Mult,Div};
-std::map<char, tokenType> dict = { {'N',Number} ,{'+',Plus} ,{'-',BinMinus} ,{'—',UnMinus} ,{'*',Mult} ,{'/',Div} };
+std::map<char, tokenType> dict = { {'N',Number} ,{'+',Plus} ,{'-',BinMinus} ,{'~',UnMinus} ,{'*',Mult} ,{'/',Div} };
 std::map<tokenType, int> price = { {Plus,1} ,{BinMinus,1} ,{Mult,2} ,{Div,2} };
 
 class token {
