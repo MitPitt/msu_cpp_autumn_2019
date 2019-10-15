@@ -5,7 +5,7 @@ int main(int argc, char* argv[]){
 		try {
 			std::cout << calc(argv[1]) << std::endl;
 		}
-		catch (MyException error) {
+		catch (MyException& error) {
 			std::cerr << error.message() << std::endl;
 			return 1;
 		}
