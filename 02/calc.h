@@ -7,10 +7,10 @@
 class MyException {
 	std::string mes;
 public:
-	std::string message() {
-		return mes;
-	}
-	MyException(std::string a) : mes(a) {}
+	virtual std::string message() {
+        	return mes;
+    	}
+	MyException(const std::string& a) : mes(a) {}
 };
 
 enum tokenType {Number,Plus,BinMinus,UnMinus,Mult,Div};
