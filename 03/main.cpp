@@ -17,7 +17,7 @@ public:
 		}
 	}
 	void reset() { curSize = 0; }
-	~LinearAllocator() { delete base; }
+	~LinearAllocator() { delete[] base; }
 };
 
 int main(int argc, char* argv[]) {
