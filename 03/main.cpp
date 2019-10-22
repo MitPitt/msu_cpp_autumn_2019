@@ -35,13 +35,13 @@ int main(int argc, char* argv[]) {
 			for (int i = 2; i < argc; i++) {
 				if (strcmp(argv[i], "reset") == 0){
 					a.reset();
-					std::cout << "r";
+					std::cout << "r";  //reset memory
 				}
 				else if (atoi(argv[i]) > 0){
 					if(a.alloc(atoi(argv[i])) == nullptr)
-						std::cout << "!";
+						std::cout << "!";  //not enough space
 					else
-						std::cout << ".";
+						std::cout << ".";  //successful allocate
 				}
 				else {
 					std::cout << "incorrect size or unknown command";
