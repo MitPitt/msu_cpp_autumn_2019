@@ -22,9 +22,9 @@ int& Row::operator[](size_t pos) {
 
 class Matrix {
 	size_t rows, cols;
-public:
 	int* matr;
-	Matrix(size_t n, size_t m, int def = 0) : rows(n), cols(m) { matr = new int[n*m]; }
+public:
+	Matrix(size_t n, size_t m) : rows(n), cols(m) { matr = new int[n*m]; }
 	size_t getRows() const { return rows; }
 	size_t getColumns() const { return cols; }
 
