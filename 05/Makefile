@@ -2,8 +2,8 @@ CC=g++
 
 all: test
 
-test: ConsoleApplication4.cpp
-	$(CC) -o test ConsoleApplication4.cpp
+test: main.cpp BigInt.h
+	$(CC) -o test main.cpp
 
 clean:
 	rm -rf *.o test run
