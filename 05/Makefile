@@ -2,7 +2,7 @@ CC=g++
 
 all: test
 
-test: main.cpp BigInt.h
+test: main.cpp BigInt.cpp
 	$(CC) -o test main.cpp
 
 clean:
