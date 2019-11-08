@@ -1,141 +1,129 @@
-#pragma once
 #include <iostream>
 #include <algorithm>
 #include <iomanip>
+#include "BigInt.h"
 
-const int BigIntBase = 1000000;
-class BigInt {
-	bool isNegative;
-	size_t size;
-	size_t maxsize;
-	int* line;
-	void push(int n) {
-		line[size] = n;
-		size += 1;
-		if (size >= maxsize) {
-			int* newline = new int[maxsize * 2];
-			maxsize *= 2;
-			for (size_t i = 0; i < size; i++)
-				newline[i] = line[i];
-			delete[] line;
-			line = newline;
-		}
-	}
-public:
-	bool getSign() const {
-		return isNegative;
-	}
-	size_t getSize() const {
-		return size;
-	}
-	size_t getMaxSize() const {
-		return maxsize;
-	}
-	~BigInt() {
+void BigInt::push(int n) {
+	line[size] = n;
+	size += 1;
+	if (size >= maxsize) {
+		int* newline = new int[maxsize * 2];
+		maxsize *= 2;
+		for (size_t i = 0; i < size; i++)
+			newline[i] = line[i];
 		delete[] line;
+		line = newline;
 	}
-	const int& operator[](size_t i) const {
-		return line[i];
-	}
-	int& operator[](size_t i) {
-		return line[i];
-	}
-	BigInt operator-() const {
-		BigInt tmp(*this);
-		tmp.isNegative = !isNegative;
-		return tmp;
-	}
-	bool operator==(const BigInt& other) const {
-		if (this == &other)
-			return true;
-		if (size != other.size) return false;
-		for (size_t i = 0; i < size; ++i)
-			if (line[i] != other[i])
-				return false;
+}
+
+bool BigInt::getSign() const {
+	return isNegative;
+}
+size_t BigInt::getSize() const {
+	return size;
+}
+size_t BigInt::getMaxSize() const {
+	return maxsize;
+}
+BigInt::~BigInt() {
+	delete[] line;
+}
+const int& BigInt::operator[](size_t i) const {
+	return line[i];
+}
+int& BigInt::operator[](size_t i) {
+	return line[i];
+}
+BigInt BigInt::operator-() const {
+	BigInt tmp(*this);
+	tmp.isNegative = !isNegative;
+	return tmp;
+}
+bool BigInt::operator==(const BigInt& other) const {
+	if (this == &other)
 		return true;
-	}
-	bool operator!=(const BigInt& other) const {
-		return !(*this == other);
-	}
-	bool operator<(const BigInt& other) const {
-		bool rev = false;
-		if (this == &other)
+	if (size != other.size) return false;
+	for (size_t i = 0; i < size; ++i)
+		if (line[i] != other[i])
 			return false;
-		if ((isNegative) && !(other.getSign())) return true;
-		else if (!(isNegative) && (other.getSign())) return false;
-		else if ((isNegative) && (other.getSign())) rev = true;
-		bool ans = false;
-		if (size < other.getSize()) ans = true;
-		else if (size > other.getSize()) ans = false;
-		else
-			for (size_t i = 0; i < size; ++i)
-				if (line[i] > other[i]) { ans = false; break; }
-				else if (line[i] < other[i]) { ans = true; break; }
-		return (ans != rev);
-	}
-	bool operator>(const BigInt& other) const {
-		bool rev = false;
-		if (this == &other)
-			return false;
-		if ((isNegative) && !(other.getSign())) return false;
-		else if (!(isNegative) && (other.getSign())) return true;
-		else if (isNegative && other.getSign()) rev = true;
-		bool ans = false;
-		if (size > other.getSize()) ans = true;
-		else if (size < other.getSize()) ans = false;
-		else
-			for (size_t i = 0; i < size; ++i)
-				if (line[i] < other[i]) { ans = false; break; }
-				else if (line[i] > other[i]) { ans = true; break; }
-		return (ans != rev);
-	}
-	bool operator>=(const BigInt& other) const {
-		return !(*this < other);
-	}
-	bool operator<=(const BigInt& other) const {
-		return !(*this > other);
-	}
+	return true;
+}
+bool BigInt::operator!=(const BigInt& other) const {
+	return !(*this == other);
+}
+bool BigInt::operator<(const BigInt& other) const {
+	bool rev = false;
+	if (this == &other)
+		return false;
+	if ((isNegative) && !(other.getSign())) return true;
+	else if (!(isNegative) && (other.getSign())) return false;
+	else if ((isNegative) && (other.getSign())) rev = true;
+	bool ans = false;
+	if (size < other.getSize()) ans = true;
+	else if (size > other.getSize()) ans = false;
+	else
+		for (size_t i = 0; i < size; ++i)
+			if (line[i] > other[i]) { ans = false; break; }
+			else if (line[i] < other[i]) { ans = true; break; }
+	return (ans != rev);
+}
+bool BigInt::operator>(const BigInt& other) const {
+	bool rev = false;
+	if (this == &other)
+		return false;
+	if ((isNegative) && !(other.getSign())) return false;
+	else if (!(isNegative) && (other.getSign())) return true;
+	else if (isNegative && other.getSign()) rev = true;
+	bool ans = false;
+	if (size > other.getSize()) ans = true;
+	else if (size < other.getSize()) ans = false;
+	else
+		for (size_t i = 0; i < size; ++i)
+			if (line[i] < other[i]) { ans = false; break; }
+			else if (line[i] > other[i]) { ans = true; break; }
+	return (ans != rev);
+}
+bool BigInt::operator>=(const BigInt& other) const {
+	return !(*this < other);
+}
+bool BigInt::operator<=(const BigInt& other) const {
+	return !(*this > other);
+}
 
-	friend BigInt operator+(const BigInt &A, const BigInt &B);
-	friend BigInt operator-(const BigInt &A, const BigInt &B);
 
-	friend std::ostream& operator<<(std::ostream& out, const BigInt& bi);
 
-	BigInt(int n);
-	BigInt(const BigInt& B);
-
-	BigInt& operator=(const BigInt& copied)
-	{
-		if (this == &copied)
-			return *this;
-		int* ptr = new int[copied.maxsize];
-		delete[] line;
-		line = ptr;
-		isNegative = copied.isNegative;
-		size = copied.size;
-		maxsize = copied.maxsize;
-		std::copy(copied.line, copied.line + maxsize, line);
+BigInt& BigInt::operator=(const BigInt& copied)
+{
+	if (this == &copied)
 		return *this;
-	}
-	BigInt(BigInt&& moved) : line(moved.line), maxsize(moved.maxsize), size(moved.size), isNegative(moved.isNegative) {
-		moved.line = nullptr;
-		moved.maxsize = 0;
-		moved.size = 0;
-	}
-	BigInt& operator=(BigInt&& moved) {
-		if (this == &moved)
-			return *this;
-		delete[] line;
-		isNegative = moved.isNegative;
-		line = moved.line;
-		size = moved.size;
-		maxsize = moved.maxsize;
-		moved.line = nullptr;
-		moved.maxsize = 0;
-		moved.size = 0;
+	int* ptr = new int[copied.maxsize];
+	delete[] line;
+	line = ptr;
+	isNegative = copied.isNegative;
+	size = copied.size;
+	maxsize = copied.maxsize;
+	std::copy(copied.line, copied.line + maxsize, line);
+	return *this;
+}
+BigInt::BigInt(BigInt&& moved) : line(moved.line), maxsize(moved.maxsize), size(moved.size), isNegative(moved.isNegative) {
+	moved.line = nullptr;
+	moved.maxsize = 0;
+	moved.size = 0;
+}
+BigInt& BigInt::operator=(BigInt&& moved) {
+	if (this == &moved)
 		return *this;
-	}
-};
+	delete[] line;
+	isNegative = moved.isNegative;
+	line = moved.line;
+	size = moved.size;
+	maxsize = moved.maxsize;
+	moved.line = nullptr;
+	moved.maxsize = 0;
+	moved.size = 0;
+	return *this;
+}
+
 
 BigInt::BigInt(int n = 0) : size(0), maxsize(8), isNegative(false) {
 
