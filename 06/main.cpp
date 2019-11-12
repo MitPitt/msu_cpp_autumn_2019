@@ -25,8 +25,8 @@ private:
 	Error process(T &value) { return save_(value); }
 
 	template<class T, class... Args>
-	Error process(T val, Args... args) {
-		if (save_(val) == Error::CorruptedArchive)
+	Error process(T value, Args... args) {
+		if (save_(value) == Error::CorruptedArchive)
 			return Error::CorruptedArchive;
 		else
 			return process(args...);
