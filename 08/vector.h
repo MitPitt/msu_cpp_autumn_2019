@@ -138,7 +138,7 @@ public:
         if (capacity_ < new_cap) {
             pointer buf = alloc_.allocate(new_cap);
             for(size_t i = 0; i < size_; i++) {
-                alloc_.construct(buf + i, std::forward<T>(*(data_ + i)));
+                alloc_.construct(buf + i, std::move(*(data_ + i)));
                 alloc_.destroy(data_ + i);
             }
             alloc_.deallocate(data_, capacity_);
