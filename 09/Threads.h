@@ -9,9 +9,8 @@
 #include <future>
 
 class ThreadPool {
-    using Task = std::function<void()>;
     std::vector<std::thread> threds;
-    std::queue<Task> taskQueue;
+    std::queue<std::function<void()>> taskQueue;
     std::mutex m;
     std::condition_variable empty_queue;
     std::atomic<bool> flag;
@@ -48,9 +47,8 @@ public:
     template<class Func, class... Args>
     auto exec(Func func, Args... args) -> std::future<decltype(func(args...))> {
         using task_type = decltype(func(args...));
-        auto one_task = std::make_shared<std::packaged_task<task_type()>>([func, args...]() {
-                                                                              return func(args...);
-                                                                          }
+        auto one_task = std::make_shared<std::packaged_task<task_type()>>(
+			[func, args...]() {return func(args...);}
         );
         std::unique_lock<std::mutex> lock(m);
         taskQueue.push([one_task]() {
